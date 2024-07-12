@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Type=Application
+Name=Web3Vault
+Terminal=false
+Exec=~/.local/bin/web3vault
+Icon=~/.local/bin/web3vault.svg
+Comment=The web3 password manager
+Categories=Network;Security;Privacy;Pasword;Utility;

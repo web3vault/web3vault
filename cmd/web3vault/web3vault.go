@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 
@@ -11,9 +12,14 @@ import (
 )
 
 func main() {
-	// Start the web server
-	log.Println("Hello Ethereum")
 
+	// CONFIGURATION
+	utils.InitConfiguration("./config.json")
+	config, err := utils.LoadConfiguration("./config.json")
+	utils.Check(err)
+	fmt.Println(config)
+
+	// Start the web server
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
@@ -31,10 +37,13 @@ func main() {
 	// React SPA Middleware
 	// It must be last middleware declared
 	router.Use(ui.NewHandler().ServeSPA)
-	log.Printf("VPN UI available at http://vault.localhost:%d/\n", 8081)
+	uiUrl := fmt.Sprintf("http://vault.localhost:%d/", config.Port)
+	fmt.Println(uiUrl)
+	log.Printf(utils.Green+"Vault UI available at %v"+utils.Reset, uiUrl)
+	ui.OpenInBrowser(uiUrl)
 
 	// Run with HTTP
-	log.Println("API is listening on http://0.0.0.0:8081/api/v0/")
-	err := router.Run("0.0.0.0:" + strconv.FormatUint(8081, 10))
+	log.Printf(utils.Green+"API is listening on http://127.0.0.1:%d/api/v0/"+utils.Reset, config.Port)
+	err = router.Run("127.0.0.1:" + strconv.FormatUint(uint64(config.Port), 10))
 	utils.Check(err)
 }
