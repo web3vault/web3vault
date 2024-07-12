@@ -33,6 +33,8 @@ func main() {
 	api := router.Group("/api/v0")
 	api.GET("/", utils.Ok)
 	api.GET("/ping", utils.Ping)
+	api.GET("/newDB", utils.EndpointNewDatabase)
+	api.POST("/updateMasterKey", utils.UpdateMasterKey)
 
 	// React SPA Middleware
 	// It must be last middleware declared

@@ -3,6 +3,7 @@ package utils
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,6 +24,11 @@ func Ok(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
 	})
+}
+
+func checkFileExists(filePath string) bool {
+	_, error := os.Open(filePath) // For read access.
+	return error == nil
 }
 
 // Coloring the terminal

@@ -55,11 +55,6 @@ func GetConfiguration(c *gin.Context) {
 	c.IndentedJSON(200, configContent)
 }
 
-func checkFileExists(filePath string) bool {
-	_, error := os.Open(filePath) // For read access.
-	return error == nil
-}
-
 // InitConfiguration initializes the configuration file with default values if it doesn't exist.
 // It takes a file path as a parameter and returns an error if any occurred during the initialization process.
 func InitConfiguration(file string) error {
@@ -93,4 +88,15 @@ func SaveConfig(config Config) error {
 	err = os.WriteFile("./config.json", content, 0664)
 	Check(err)
 	return nil
+}
+
+func UpdateMasterKey(c *gin.Context) {
+	config, err := LoadConfiguration("./config.json")
+	Check(err)
+
+	mk := c.PostForm("mk")
+	config.MasterKey = mk
+
+	SaveConfig(config)
+	c.IndentedJSON(200, config)
 }
