@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default function EntityList({ listItem, setListItem }: { listItem: any, setListItem: any }) {
+export default function EntityList({
+  listItem,
+  setListItem,
+}: {
+  listItem: any;
+  setListItem: any;
+}) {
   function showEntityDetails(event: React.MouseEvent<HTMLDivElement>) {
     event.preventDefault();
     console.log("showEntityDetails", event);

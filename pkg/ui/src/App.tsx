@@ -17,9 +17,7 @@ function App() {
       try {
         // Start fetching data
         // get the data from the api
-        const response = await fetch(
-          "http://vault.localhost:8081/api/v0/db"
-        );
+        const response = await fetch("http://vault.localhost:8081/api/v0/db");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -69,38 +67,46 @@ function App() {
     console.log("importVault");
   }
 
-  console.log(data)
+  console.log(data);
 
   return (
     <>
       <Navbar></Navbar>
-      {data?.entries.map((item) => (
-        <EntityList listItem={item} setListItem={setListItem} key={item.id} />
-      ))}
+      <div className="mt-8">
+        {data?.entries
+          ? data?.entries.map((item) => (
+              <EntityList
+                listItem={item}
+                setListItem={setListItem}
+                key={item.id}
+              />
+            ))
+          : ""}
 
-      {/* {console.log("ListItem: ", listItem.id)} */}
+        {/* {console.log("ListItem: ", listItem.id)} */}
 
-      <Button className="mr-8" onClick={createVault}>
-        Create a new Vault
-      </Button>
-      <Button className="mr-8" variant="secondary" onClick={syncVault}>
-        Sync your Vault
-      </Button>
-      <Button className="mr-8" variant="secondary" onClick={importVault}>
-        Import Vault
-      </Button>
+        <Button className="mr-8" onClick={createVault}>
+          Create a new Vault
+        </Button>
+        <Button className="mr-8" variant="secondary" onClick={syncVault}>
+          Sync your Vault
+        </Button>
+        <Button className="mr-8" variant="secondary" onClick={importVault}>
+          Import Vault
+        </Button>
 
-      {/* {console.log("adsdas: ", listItem)} */}
-      {/* {console.log("adsdas 32: ", data.entries)} */}
-      {listItem
-        ? data?.entries.map((item) =>
-            item.id == listItem ? (
-              <EntityListDetail key={item.id} entry={item} />
-            ) : (
-              ""
+        {/* {console.log("adsdas: ", listItem)} */}
+        {/* {console.log("adsdas 32: ", data.entries)} */}
+        {listItem
+          ? data?.entries.map((item) =>
+              item.id == listItem ? (
+                <EntityListDetail key={item.id} entry={item} />
+              ) : (
+                ""
+              )
             )
-          )
-        : ""}
+          : ""}
+      </div>
     </>
   );
 }

@@ -12,7 +12,7 @@ export default function showEntityDetails({ entry }: { entry: any }) {
           <div>
             Categories:
             <ul className="list-disc">
-              {entry.categories.map((category) => (
+              {entry.categories.map((category: string) => (
                 <li key={category}>{category}</li>
               ))}
             </ul>
