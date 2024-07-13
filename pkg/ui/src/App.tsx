@@ -5,6 +5,7 @@ import Navbar from "./components/ui/Navbar";
 import EntityList from "./components/EntityList";
 import EntityListDetail from "./components/EntityListDetail";
 import axios from "axios";
+import EntityCreate from "./components/EntityCreate";
 
 interface Entry {
   name: string;
@@ -18,6 +19,7 @@ interface Entry {
 function App() {
   const [data, setData] = useState<{ entries: any[] }>({ entries: [] });
   const [loading, setLoading] = useState(true);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [listItem, setListItem] = useState(undefined);
 
@@ -70,25 +72,7 @@ function App() {
   // new vault entry
   function newVaultEntry() {
     console.log("createVaultEntry");
-
-    const count = data?.entries ? data?.entries?.length : "";
-    const entry: Entry = {
-      name: "test " + count,
-      login: "test",
-      password: "test",
-      website: "test",
-      note: "test",
-      categories: ["test"],
-    };
-    axios
-      .post("http://vault.localhost:8081/api/v0/entry", entry)
-      .then((response) => {
-        console.log(response);
-        getEntity();
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    setShowCreateForm(true);
   }
 
   function syncVault() {
@@ -155,15 +139,21 @@ function App() {
             : ""}
         </div>
         <div className="col-span-9">
-          {listItem && data && data.entries
-            ? data.entries.map((item) =>
-                item.id == listItem ? (
-                  <EntityListDetail key={item.id} entry={item} />
-                ) : (
-                  ""
-                )
-              )
-            : ""}
+          {showCreateForm ? (
+            <EntityCreate setShowCreateForm={setShowCreateForm} />
+          ) : (
+            <div>
+              {listItem && data && data.entries
+                ? data.entries.map((item) =>
+                    item.id == listItem ? (
+                      <EntityListDetail key={item.id} entry={item} />
+                    ) : (
+                      ""
+                    )
+                  )
+                : ""}
+            </div>
+          )}
         </div>
       </div>
     </>
