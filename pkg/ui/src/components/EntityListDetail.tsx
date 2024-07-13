@@ -15,12 +15,12 @@ export default function showEntityDetails({ entry }: { entry: any }) {
 
   return (
     <div className="mt-6" id={entry.id}>
-      <div>Name: {entry.name}</div>
-      <div>Login/Username: {entry.login}</div>
-      <div>Password: {entry.password}</div>
-      <div>Website: {entry.website}</div>
-      <div>Note: {entry.note}</div>
-      <div>
+      <div className="text-left">Name: {entry.name}</div>
+      <div className="text-left">Login/Username: {entry.login}</div>
+      <div className="text-left">Password: {entry.password}</div>
+      <div className="text-left">Website: {entry.website}</div>
+      <div className="text-left">Note: {entry.note}</div>
+      <div className="text-left">
         {entry?.categories ? (
           <div>
             Categories:
@@ -34,7 +34,12 @@ export default function showEntityDetails({ entry }: { entry: any }) {
           ""
         )}
         <div>
-          <Button variant="outline" id={entry?.id} onClick={deleteEntityItem}>
+          <Button
+            className="mt-8"
+            variant="outline"
+            id={entry?.id}
+            onClick={deleteEntityItem}
+          >
             x
           </Button>
         </div>

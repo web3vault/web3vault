@@ -13,7 +13,11 @@ export default function EntityList({
   }
 
   return (
-    <div onClick={showEntityDetails} className="mt-4 mb-8" id={listItem?.id}>
+    <div
+      onClick={showEntityDetails}
+      className="mt-6 mb-6 border-b-2"
+      id={listItem?.id}
+    >
       {listItem?.name}
     </div>
   );

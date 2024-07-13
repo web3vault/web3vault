@@ -21,28 +21,31 @@ function App() {
   const [error, setError] = useState<Error | null>(null);
   const [listItem, setListItem] = useState(undefined);
 
+  async function getEntity() {
+    try {
+      // Start fetching data
+      // get the data from the api
+      const response = await fetch("http://vault.localhost:8081/api/v0/db");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Response: ", data.entries);
+
+      // set state with the result
+      setData(data);
+    } catch (error: any) {
+      setError(error); // Set error state
+    } finally {
+      setLoading(false); // Set loading state to false
+    }
+  }
+
   useEffect(() => {
     // declare the async data fetching function
     const fetchData = async () => {
-      try {
-        // Start fetching data
-        // get the data from the api
-        const response = await fetch("http://vault.localhost:8081/api/v0/db");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        console.log("Response: ", data.entries);
-
-        // set state with the result
-        setData(data);
-      } catch (error: any) {
-        setError(error); // Set error state
-      } finally {
-        setLoading(false); // Set loading state to false
-      }
+      await getEntity();
     };
-
     // call the function
     fetchData()
       // make sure to catch any error
@@ -79,7 +82,10 @@ function App() {
     };
     axios
       .post("http://vault.localhost:8081/api/v0/entry", entry)
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+        getEntity();
+      })
       .catch((error) => {
         console.error("There was an error!", error);
       });
@@ -93,16 +99,6 @@ function App() {
     <>
       <Navbar></Navbar>
       <div className="mt-8">
-        {data && data.entries
-          ? data.entries.map((item) => (
-              <EntityList
-                listItem={item}
-                setListItem={setListItem}
-                key={item.id}
-              />
-            ))
-          : ""}
-
         <Button className="mr-8" onClick={createVault}>
           Create a new Vault
         </Button>
@@ -112,16 +108,30 @@ function App() {
         <Button className="mr-8" variant="secondary" onClick={syncVault}>
           Sync your Vault
         </Button>
-
-        {listItem && data && data.entries
-          ? data.entries.map((item) =>
-              item.id == listItem ? (
-                <EntityListDetail key={item.id} entry={item} />
-              ) : (
-                ""
+      </div>
+      <div className="mt-8 grid grid-flow-col gap-6">
+        <div className="col-span-3">
+          {data && data.entries
+            ? data.entries.map((item) => (
+                <EntityList
+                  listItem={item}
+                  setListItem={setListItem}
+                  key={item.id}
+                />
+              ))
+            : ""}
+        </div>
+        <div className="col-span-9">
+          {listItem && data && data.entries
+            ? data.entries.map((item) =>
+                item.id == listItem ? (
+                  <EntityListDetail key={item.id} entry={item} />
+                ) : (
+                  ""
+                )
               )
-            )
-          : ""}
+            : ""}
+        </div>
       </div>
     </>
   );
