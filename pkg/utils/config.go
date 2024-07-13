@@ -10,13 +10,14 @@ import (
 
 // Config represents the configuration settings for the application.
 type Config struct {
-	Port            int    `json:"port"`
-	Debug           bool   `json:"debug"`
-	MasterKey       string `json:"masterKey"`
-	IpfsGateway     string `json:"ipfsGateway"`
-	ChainId         int64  `json:"chainId"`
-	RPCAddress      string `json:"RPCAddress"`
-	ContractAddress string `json:"ContractAddress"`
+	Port                int    `json:"port"`
+	Debug               bool   `json:"debug"`
+	MasterKey           string `json:"masterKey"`
+	IpfsGateway         string `json:"ipfsGateway"`
+	ChainId             int64  `json:"chainId"`
+	RPCAddress          string `json:"RPCAddress"`
+	ContractAddress     string `json:"ContractAddress"`
+	EncryptionAlgorithm string `json:"encryptionAlgorithm"`
 }
 
 // LoadConfiguration loads the configuration settings from the specified file.
@@ -29,12 +30,13 @@ func LoadConfiguration(file string) (Config, error) {
 	configFile, err := os.Open(file)
 	if err != nil {
 		config = Config{
-			Port:        8081,
-			Debug:       false,
-			IpfsGateway: "http://127.0.0.1:8080/",
-			MasterKey:   "toBeChanged",
-			ChainId:     1337,
-			RPCAddress:  "http://127.0.0.1:8545",
+			Port:                8081,
+			Debug:               false,
+			IpfsGateway:         "http://127.0.0.1:8080/",
+			MasterKey:           "toBeChanged",
+			ChainId:             1337,
+			RPCAddress:          "http://127.0.0.1:8545",
+			EncryptionAlgorithm: "AES256",
 		}
 		return config, err
 	} else {
@@ -63,12 +65,13 @@ func InitConfiguration(file string) error {
 	} else {
 		log.Println("Init configuration...")
 		config := Config{
-			Port:        8081,
-			Debug:       false,
-			IpfsGateway: "http://127.0.0.1:8080/",
-			MasterKey:   "toBeChanged",
-			ChainId:     1337,
-			RPCAddress:  "http://127.0.0.1:8545",
+			Port:                8081,
+			Debug:               false,
+			IpfsGateway:         "http://127.0.0.1:8080/",
+			MasterKey:           "toBeChanged",
+			ChainId:             1337,
+			RPCAddress:          "http://127.0.0.1:8545",
+			EncryptionAlgorithm: "AES256",
 		}
 		content, err := json.MarshalIndent(config, "", "    ")
 		if err != nil {
