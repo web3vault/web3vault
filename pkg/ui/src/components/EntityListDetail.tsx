@@ -8,12 +8,18 @@ export default function showEntityDetails({ entry }: { entry: any }) {
       <div>Website: {entry.website}</div>
       <div>Note: {entry.note}</div>
       <div>
-        Categories:{" "}
-        <ul className="list-disc">
-          {entry?.categories?.map((category: string) => (
-            <li>{category}</li>
-          ))}
-        </ul>
+        {entry?.categories ? (
+          <div>
+            Categories:
+            <ul className="list-disc">
+              {entry.categories.map((category) => (
+                <li key={category}>{category}</li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

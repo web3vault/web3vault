@@ -93,8 +93,12 @@ function App() {
       {/* {console.log("adsdas: ", listItem)} */}
       {/* {console.log("adsdas 32: ", data.entries)} */}
       {listItem
-        ? data.entries.map((item) =>
-            item.id == listItem ? <EntityListDetail entry={item} /> : ""
+        ? data?.entries.map((item) =>
+            item.id == listItem ? (
+              <EntityListDetail key={item.id} entry={item} />
+            ) : (
+              ""
+            )
           )
         : ""}
     </>
