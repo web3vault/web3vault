@@ -14,10 +14,16 @@ contract W3Vault {
 
     uint256  public  _count;
 
+    
+    /**
+     * @dev This internal function increments the count of vaults and returns the new value if a new vault has been published successfully. 
+     * If the caller's address does not have an existing vault, the function simply returns the current count without incrementing it.
+     * @return The new count after potential incrementation.
+     */
     function incrementCount() private returns (uint256){
-        /// if vaults[msg.sender] is empty do not increment the counter _count
-        if (bytes(vaults[msg.sender].encryptedPointer).length == 0) return _count;
-        _count += 1;
+        if (vaults[msg.sender].timestamp == 0) {
+            _count += 1;
+        } 
         return _count;
     }
 
@@ -27,9 +33,9 @@ contract W3Vault {
      * @param _encryptedReference The encrypted data pointer to be stored in the vault.
      */
     function publishVault(string calldata _encryptedReference) public {
+        incrementCount();
         vaults[msg.sender] = Vault(_encryptedReference, block.timestamp);
         emit NewVault(msg.sender, _encryptedReference, block.timestamp);
-        incrementCount();
     }
     
     /**
