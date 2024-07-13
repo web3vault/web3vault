@@ -6,6 +6,7 @@ import EntityList from "./components/EntityList";
 import EntityListDetail from "./components/EntityListDetail";
 import axios from "axios";
 import EntityCreate from "./components/EntityCreate";
+import Footer from "./components/Footer";
 
 interface Entry {
   name: string;
@@ -156,6 +157,7 @@ function App() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }
