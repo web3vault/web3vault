@@ -26,4 +26,7 @@ config.json
 web3vault
 .DS_Store
 
+private.key
+*.ucan
+
 db.enc
