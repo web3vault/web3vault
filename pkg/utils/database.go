@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,6 +41,14 @@ func (db Database) AddCategory(entryId int, label string) Database {
 	return db
 }
 
+func EndpointAddCategory(c *gin.Context) {
+	db := LoadDatabase()
+	entryId, _ := strconv.Atoi(c.Param("id"))
+	label := c.PostForm("label")
+	db = db.AddCategory(entryId, label)
+	c.IndentedJSON(200, db)
+}
+
 func (db Database) GetEntryIndexById(id int) int {
 	for i, v := range db.Entries {
 		if v.ID == id {
@@ -63,14 +72,13 @@ func (db Database) AddEntry(n string, l string, p string, w string, c string) Da
 	return db
 }
 
-// func (c Category) GetEntryIndex(e Entry) int {
-// 	for i, v := range c.Entries {
-// 		if v.Name == e.Name {
-// 			return i
-// 		}
-// 	}
-// 	return -1
-// }
+func EndpointAddEntry(c *gin.Context) {
+	db := LoadDatabase()
+	var entry Entry
+	c.BindJSON(&entry)
+	db = db.AddEntry(entry.Name, entry.Login, entry.Password, entry.Website, entry.Note)
+	c.IndentedJSON(200, db)
+}
 
 func NewDatabase(name string) Database {
 	var e []Entry
