@@ -1,8 +1,13 @@
 import axios from "axios";
 import { Button } from "./ui/button";
+import EntityShow from "./EntityShow";
+import EntityEdit from "./EntityEdit";
+import { useState } from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default function showEntityDetails({ entry }: { entry: any }) {
+export default function EntityListDetail({ entry }: { entry: any }) {
+  const [showEditForm, setShowEditForm] = useState(false);
+
   function deleteEntityItem(event: React.MouseEvent<HTMLDivElement>) {
     console.log(event.target.id);
     axios
@@ -13,37 +18,43 @@ export default function showEntityDetails({ entry }: { entry: any }) {
       });
   }
 
+  function editEntityItem(event: React.MouseEvent<HTMLDivElement>) {
+    console.log(event.target.id);
+    setShowEditForm(true);
+  }
+
   return (
-    <div className="mt-6" id={entry.id}>
-      <div className="text-left">Name: {entry.name}</div>
-      <div className="text-left">Login/Username: {entry.login}</div>
-      <div className="text-left">Password: {entry.password}</div>
-      <div className="text-left">Website: {entry.website}</div>
-      <div className="text-left">Note: {entry.note}</div>
-      <div className="text-left">
-        {entry?.categories ? (
-          <div>
-            Categories:
-            <ul className="list-disc">
-              {entry.categories.map((category: string) => (
-                <li key={category}>{category}</li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          ""
-        )}
+    <div className="bg-white p-6 mr-6" id={entry.id}>
+      {showEditForm ? (
+        <EntityEdit
+          entry={entry}
+          setShowEditForm={setShowEditForm}
+        ></EntityEdit>
+      ) : (
         <div>
-          <Button
-            className="mt-8"
-            variant="outline"
-            id={entry?.id}
-            onClick={deleteEntityItem}
-          >
-            x
-          </Button>
+          <div className="flex justify-center">
+            <EntityShow entry={entry} />
+          </div>
+          <div>
+            <Button
+              className="mt-8"
+              variant="outline"
+              id={entry?.id}
+              onClick={editEntityItem}
+            >
+              Edit
+            </Button>
+            <Button
+              className="mt-8 ml-4"
+              variant="outline"
+              id={entry?.id}
+              onClick={deleteEntityItem}
+            >
+              Delete
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

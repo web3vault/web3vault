@@ -15,7 +15,7 @@ export default function EntityList({
   return (
     <div
       onClick={showEntityDetails}
-      className="mt-6 mb-6 border-b-2"
+      className="mt-6 mb-6 p-2 ml-4 border-b-2 bg-white"
       id={listItem?.id}
     >
       {listItem?.name}
