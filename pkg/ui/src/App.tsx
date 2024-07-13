@@ -47,7 +47,7 @@ function App() {
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [data]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -59,20 +59,18 @@ function App() {
   // newDB
   function createVault() {
     console.log("createVaultEntry");
-    axios
-      .get("http://vault.localhost:8081/api/v0/newDB")
-      .then((response) => setData({ entries: response.data }))
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    axios.get("http://vault.localhost:8081/api/v0/newDB").catch((error) => {
+      console.error("There was an error!", error);
+    });
   }
 
   // new vault entry
   function newVaultEntry() {
     console.log("createVaultEntry");
-    // POST request using axios with error handling
+
+    const count = data?.entries ? data?.entries?.length : "";
     const entry: Entry = {
-      name: "test",
+      name: "test " + count,
       login: "test",
       password: "test",
       website: "test",
