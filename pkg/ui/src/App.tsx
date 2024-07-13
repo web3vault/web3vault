@@ -1,14 +1,14 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Button } from "./components/ui/button";
+import Navbar from "./components/ui/Navbar";
 import EntityList from "./components/EntityList";
 import EntityListDetail from "./components/EntityListDetail";
 
 function App() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState<{ entries: any[] }>({ entries: [] });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
   const [listItem, setListItem] = useState(undefined);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function App() {
         // Start fetching data
         // get the data from the api
         const response = await fetch(
-          "http://vault.localhost:8081/api/v0/newDB"
+          "http://vault.localhost:8081/api/v0/db"
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -28,7 +28,7 @@ function App() {
 
         // set state with the result
         setData(data);
-      } catch (error) {
+      } catch (error: any) {
         setError(error); // Set error state
       } finally {
         setLoading(false); // Set loading state to false
@@ -69,9 +69,11 @@ function App() {
     console.log("importVault");
   }
 
+  console.log(data)
+
   return (
     <>
-      <h1>Web3vault - EthGlobal 2024</h1>
+      <Navbar></Navbar>
       {data?.entries.map((item) => (
         <EntityList listItem={item} setListItem={setListItem} key={item.id} />
       ))}
