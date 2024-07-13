@@ -164,8 +164,10 @@ func (db Database) Save() {
 
 	err = os.WriteFile("./db.enc", []byte(enc), 0664)
 	Check(err)
-	err = os.WriteFile("./db.json", b, 0664)
-	Check(err)
+	if config.Debug {
+		err = os.WriteFile("./db.json", b, 0664)
+		Check(err)
+	}
 }
 
 func LoadDatabase() Database {
