@@ -63,12 +63,6 @@ function App() {
     console.log("syncVault");
   }
 
-  function importVault() {
-    console.log("importVault");
-  }
-
-  console.log(data);
-
   return (
     <>
       <Navbar></Navbar>
@@ -90,9 +84,6 @@ function App() {
         </Button>
         <Button className="mr-8" variant="secondary" onClick={syncVault}>
           Sync your Vault
-        </Button>
-        <Button className="mr-8" variant="secondary" onClick={importVault}>
-          Import Vault
         </Button>
 
         {/* {console.log("adsdas: ", listItem)} */}
