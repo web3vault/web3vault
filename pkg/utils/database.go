@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"os"
 	"strconv"
 
@@ -198,4 +199,42 @@ func LoadDatabase() Database {
 	} else {
 		return NewDatabase("myDB")
 	}
+}
+
+func EndpointSyncDatabase(c *gin.Context) {
+	config, err := LoadConfiguration("./config.json")
+	Check(err)
+	b, err := os.ReadFile("./db.enc")
+	Check(err)
+	var crypt Crypto
+	switch config.EncryptionAlgorithm {
+	case "XOR":
+		crypt = XOR{K: config.MasterKey}
+	case "AES256":
+		crypt = AES256{K: config.MasterKey}
+	}
+	enc := crypt.Encrypt(string(b))
+
+	// TODO: Publish the encrypted file to web3.storage
+	// TODO: Get the CID from the published file
+	// TODO: Encrypt the CID and send it back to the frontend so the user could send a tx to the smart contract
+
+	// err = os.WriteFile("./enc_cid", []byte(enc), 0664)
+	// Check(err)
+	c.IndentedJSON(200, enc)
+}
+
+func EndpointGetBackSyncedDatabase(c *gin.Context) {
+	_, err := LoadConfiguration("./config.json")
+	Check(err)
+	// TODO: Get the encrypted CID from the smart contract and decrypt it with the master key
+	encCid := c.Param("encCid")
+	log.Println(encCid)
+	// TODO: Get back the encrypted file from web3.storage
+	// TODO: Decrypt it with the master key
+	// TODO: Send it back to the frontend + save it locally
+
+	// err = os.WriteFile("./db.enc", []byte(enc), 0664)
+	// Check(err)
+	c.IndentedJSON(200, "encrypted db")
 }
