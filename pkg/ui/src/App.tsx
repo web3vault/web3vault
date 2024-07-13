@@ -6,6 +6,15 @@ import EntityList from "./components/EntityList";
 import EntityListDetail from "./components/EntityListDetail";
 import axios from "axios";
 
+interface Entry {
+  name: string;
+  login: string;
+  password: string;
+  website: string;
+  note: string;
+  categories: Array<string>;
+}
+
 function App() {
   const [data, setData] = useState<{ entries: any[] }>({ entries: [] });
   const [loading, setLoading] = useState(true);
@@ -38,7 +47,7 @@ function App() {
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, []);
+  }, [data]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -57,6 +66,25 @@ function App() {
         console.error("There was an error!", error);
       });
   }
+
+  // new vault entry
+  function newVaultEntry() {
+    console.log("createVaultEntry");
+    // POST request using axios with error handling
+    const entry: Entry = {
+      name: "test",
+      login: "test",
+      password: "test",
+      website: "test",
+      note: "test",
+      categories: ["test"],
+    };
+    axios
+      .post("http://vault.localhost:8081/api/v0/entry", entry)
+      .then((response) => console.log(response))
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   }
 
   function syncVault() {
@@ -79,6 +107,9 @@ function App() {
 
         <Button className="mr-8" onClick={createVault}>
           Create a new Vault
+        </Button>
+        <Button className="mr-8" onClick={newVaultEntry}>
+          Create a new Entry
         </Button>
         <Button className="mr-8" variant="secondary" onClick={syncVault}>
           Sync your Vault
