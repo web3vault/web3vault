@@ -29,7 +29,7 @@ export default function Navbar() {
     const { ready, authenticated, user, login, logout } = usePrivy();
     // Wait until the Privy client is ready before taking any actions
     if (!ready) {
-        return null;
+      return null;
     }
 
     const PrivyLogo = () => (

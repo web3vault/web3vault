@@ -159,7 +159,13 @@ func (db Database) Save() {
 	b, err := json.Marshal(db)
 	Check(err)
 	// fmt.Println(string(b))
-	var crypt Crypto = AES256{K: config.MasterKey}
+	var crypt Crypto
+	switch config.EncryptionAlgorithm {
+	case "XOR":
+		crypt = XOR{K: config.MasterKey}
+	case "AES256":
+		crypt = AES256{K: config.MasterKey}
+	}
 	enc := crypt.Encrypt(string(b))
 
 	err = os.WriteFile("./db.enc", []byte(enc), 0664)
@@ -176,7 +182,13 @@ func LoadDatabase() Database {
 		Check(err)
 		b, err := os.ReadFile("./db.enc")
 		Check(err)
-		var crypt Crypto = AES256{K: config.MasterKey}
+		var crypt Crypto
+		switch config.EncryptionAlgorithm {
+		case "XOR":
+			crypt = XOR{K: config.MasterKey}
+		case "AES256":
+			crypt = AES256{K: config.MasterKey}
+		}
 		dec := crypt.Decrypt(string(b))
 		// fmt.Println(dec)
 		var db Database
