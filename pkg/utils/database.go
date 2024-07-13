@@ -2,7 +2,7 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"os"
 	"strconv"
 
@@ -35,7 +35,8 @@ func (db Database) generateID() int {
 }
 
 func (db Database) AddCategory(entryId int, label string) Database {
-	idx := db.GetEntryIndexById(entryId)
+	idx, err := db.GetEntryIndexById(entryId)
+	Check(err)
 	db.Entries[idx].Categories = append(db.Entries[idx].Categories, label)
 	db.Save()
 	return db
@@ -49,13 +50,30 @@ func EndpointAddCategory(c *gin.Context) {
 	c.IndentedJSON(200, db)
 }
 
-func (db Database) GetEntryIndexById(id int) int {
-	for i, v := range db.Entries {
-		if v.ID == id {
-			return i
+func EndpointDeleteCategory(c *gin.Context) {
+	db := LoadDatabase()
+	entryId, _ := strconv.Atoi(c.Param("id"))
+	label := c.Param("name")
+	idx, err := db.GetEntryIndexById(entryId)
+	Check(err)
+	for i, v := range db.Entries[idx].Categories {
+		if v == label {
+			db.Entries[idx].Categories = append(db.Entries[idx].Categories[:i], db.Entries[idx].Categories[i+1:]...)
+			db.Save()
+			c.IndentedJSON(200, db)
+			return
 		}
 	}
-	return -1
+	c.IndentedJSON(404, "Category not found")
+}
+
+func (db Database) GetEntryIndexById(id int) (int, error) {
+	for i, v := range db.Entries {
+		if v.ID == id {
+			return i, nil
+		}
+	}
+	return -1, errors.New("Entry not found")
 }
 
 func (db Database) AddEntry(n string, l string, p string, w string, c string) Database {
@@ -80,6 +98,35 @@ func EndpointAddEntry(c *gin.Context) {
 	c.IndentedJSON(200, db)
 }
 
+func EndpointDeleteEntry(c *gin.Context) {
+	db := LoadDatabase()
+	id, _ := strconv.Atoi(c.Param("id"))
+	idx, err := db.GetEntryIndexById(id)
+	if err != nil {
+		c.IndentedJSON(404, err.Error())
+		return
+	}
+	db.Entries = append(db.Entries[:idx], db.Entries[idx+1:]...)
+	db.Save()
+	c.IndentedJSON(200, db)
+}
+
+func EndpointEditEntry(c *gin.Context) {
+	db := LoadDatabase()
+	id, _ := strconv.Atoi(c.Param("id"))
+	idx, err := db.GetEntryIndexById(id)
+	if err != nil {
+		c.IndentedJSON(404, err.Error())
+		return
+	}
+	var entry Entry
+	c.BindJSON(&entry)
+	entry.ID = id
+	db.Entries[idx] = entry
+	db.Save()
+	c.IndentedJSON(200, db)
+}
+
 func NewDatabase(name string) Database {
 	var e []Entry
 	return Database{
@@ -91,13 +138,18 @@ func NewDatabase(name string) Database {
 func EndpointNewDatabase(c *gin.Context) {
 	db := NewDatabase("myDB")
 
-	db = db.AddEntry("GitHub", "foo", "octocat", "https://github.com/login", "My GH account")
-	db = db.AddEntry("Twitter", "foo", "bird", "https://x.com/login", "My X account")
-	db = db.AddCategory(1, "Social")
-	db = db.AddCategory(1, "Development")
-	db = db.AddCategory(2, "Social")
+	// db = db.AddEntry("GitHub", "foo", "octocat", "https://github.com/login", "My GH account")
+	// db = db.AddEntry("Twitter", "foo", "bird", "https://x.com/login", "My X account")
+	// db = db.AddCategory(1, "Social")
+	// db = db.AddCategory(1, "Development")
+	// db = db.AddCategory(2, "Social")
 	db.Save()
 
+	c.IndentedJSON(200, db)
+}
+
+func EndpointGetDatabase(c *gin.Context) {
+	db := LoadDatabase()
 	c.IndentedJSON(200, db)
 }
 
@@ -106,7 +158,7 @@ func (db Database) Save() {
 	Check(err)
 	b, err := json.Marshal(db)
 	Check(err)
-	fmt.Println(string(b))
+	// fmt.Println(string(b))
 	var crypt Crypto = AES256{K: config.MasterKey}
 	enc := crypt.Encrypt(string(b))
 
@@ -124,7 +176,7 @@ func LoadDatabase() Database {
 		Check(err)
 		var crypt Crypto = AES256{K: config.MasterKey}
 		dec := crypt.Decrypt(string(b))
-		fmt.Println(dec)
+		// fmt.Println(dec)
 		var db Database
 		err = json.Unmarshal([]byte(dec), &db)
 		Check(err)

@@ -34,8 +34,12 @@ func main() {
 	api.GET("/", utils.Ok)
 	api.GET("/ping", utils.Ping)
 	api.GET("/newDB", utils.EndpointNewDatabase)
+	api.GET("/db", utils.EndpointGetDatabase)
 	api.POST("/entry", utils.EndpointAddEntry)
+	api.PUT("/entry/:id", utils.EndpointEditEntry)
+	api.DELETE("/entry/:id", utils.EndpointDeleteEntry)
 	api.POST("/entry/:id/category", utils.EndpointAddCategory)
+	api.DELETE("/entry/:id/category/:name", utils.EndpointDeleteCategory)
 	api.POST("/updateMasterKey", utils.UpdateMasterKey)
 
 	// React SPA Middleware
