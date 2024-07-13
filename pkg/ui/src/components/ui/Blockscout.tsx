@@ -35,7 +35,7 @@ export default function NodeDetails() {
     
     return (
     <div>  
-      <a href="https://eth-sepolia.blockscout.com" target="blank" style={buttonStyle} aria-label="fff">
+      <a href="https://base.blockscout.com/address/0xB85e9607a719a1d51963114aF94F49dAa1335aF1?tab=contract" target="blank" style={buttonStyle} aria-label="fff">
           <SvgComponent></SvgComponent>
           <span style={{paddingTop:7}}>Contract</span>
       </a>
