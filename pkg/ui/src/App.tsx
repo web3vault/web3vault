@@ -4,6 +4,7 @@ import { Button } from "./components/ui/button";
 import Navbar from "./components/ui/Navbar";
 import EntityList from "./components/EntityList";
 import EntityListDetail from "./components/EntityListDetail";
+import axios from "axios";
 
 function App() {
   const [data, setData] = useState<{ entries: any[] }>({ entries: [] });
@@ -48,15 +49,14 @@ function App() {
   }
   // newDB
   function createVault() {
-    console.log("createVault");
-    //     // POST request using axios with error handling
-    //     const article = { title: 'React POST Request Example' };
-    //     axios.post('https://reqres.in/invalid-url', article)
-    //         .then(response => this.setState({ articleId: response.data.id }))
-    //         .catch(error => {
-    //             this.setState({ errorMessage: error.message });
-    //             console.error('There was an error!', error);
-    //         });
+    console.log("createVaultEntry");
+    axios
+      .get("http://vault.localhost:8081/api/v0/newDB")
+      .then((response) => setData({ entries: response.data }))
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }
   }
 
   function syncVault() {
@@ -67,8 +67,8 @@ function App() {
     <>
       <Navbar></Navbar>
       <div className="mt-8">
-        {data?.entries
-          ? data?.entries.map((item) => (
+        {data && data.entries
+          ? data.entries.map((item) => (
               <EntityList
                 listItem={item}
                 setListItem={setListItem}
@@ -77,8 +77,6 @@ function App() {
             ))
           : ""}
 
-        {/* {console.log("ListItem: ", listItem.id)} */}
-
         <Button className="mr-8" onClick={createVault}>
           Create a new Vault
         </Button>
@@ -86,10 +84,8 @@ function App() {
           Sync your Vault
         </Button>
 
-        {/* {console.log("adsdas: ", listItem)} */}
-        {/* {console.log("adsdas 32: ", data.entries)} */}
-        {listItem
-          ? data?.entries.map((item) =>
+        {listItem && data && data.entries
+          ? data.entries.map((item) =>
               item.id == listItem ? (
                 <EntityListDetail key={item.id} entry={item} />
               ) : (
