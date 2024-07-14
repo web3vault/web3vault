@@ -2,12 +2,10 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Tag, TagInput } from "emblor";
 import axios from "axios";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -68,7 +66,6 @@ export default function EntityEdit({ entry, setShowEditForm }) {
 
   return (
     <div className="bg-white justify-center flex">
-      {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
       <div className="">
         <h1>Edit</h1>
         <Form {...form}>
@@ -106,7 +103,7 @@ export default function EntityEdit({ entry, setShowEditForm }) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="" type="password" {...field} />
+                    <Input placeholder="" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
