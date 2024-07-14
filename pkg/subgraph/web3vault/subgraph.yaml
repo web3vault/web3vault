@@ -1,0 +1,26 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: W3Vault
+    network: base
+    source:
+      address: "0xB85e9607a719a1d51963114aF94F49dAa1335aF1"
+      abi: W3Vault
+      startBlock: 17042386
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - NewVault
+      abis:
+        - name: W3Vault
+          file: ./abis/W3Vault.json
+      eventHandlers:
+        - event: NewVault(address,string,uint256)
+          handler: handleNewVault
+      file: ./src/w-3-vault.ts

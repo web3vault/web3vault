@@ -23,7 +23,6 @@ go.work.sum
 
 
 config.json
-web3vault
 .DS_Store
 
 private.key
