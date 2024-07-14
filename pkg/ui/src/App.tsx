@@ -160,14 +160,14 @@ function App() {
           )}
         </div>
       </div>
-      <Connecting
+      {/* <Connecting
         account={account}
         disconnect={disconnect}
         connectors={connectors}
         connect={connect}
         cerror={cerror}
         status={status}
-      />
+      /> */}
       <Footer />
     </>
   );

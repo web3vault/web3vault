@@ -66,7 +66,7 @@ export default function EntityCreate({ setShowCreateForm }) {
 
   return (
     <div className="bg-white justify-center flex">
-      <div className="mt-6">
+      <div className="mt-6 mb-6">
         <h1>Create</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -87,7 +87,7 @@ export default function SyncComponent() {
 
   return (
     <div>
-      <Button className="mr-8" variant="secondary" onClick={syncVault}>
+      <Button className="mr-8 mt-6" variant="secondary" onClick={syncVault}>
         <SyncIcon></SyncIcon>
         <span style={{ marginLeft: 10 }}>Sync your Vault</span>
       </Button>
