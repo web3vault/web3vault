@@ -34,7 +34,7 @@ func LoadConfiguration(file string) (Config, error) {
 			Debug:               false,
 			IpfsGateway:         "http://127.0.0.1:8080/",
 			MasterKey:           "3ECB00DB9C0F56D72861E88A02D5D914629525EF03072B516A523FF92BB14F5D",
-			ChainId:             1337,
+			ChainId:             8453, // We did the deployment from Remix, but it was planned initially to deploy it from the backend
 			RPCAddress:          "http://127.0.0.1:8545",
 			EncryptionAlgorithm: "AES256",
 		}
@@ -69,7 +69,7 @@ func InitConfiguration(file string) error {
 			Debug:               false,
 			IpfsGateway:         "http://127.0.0.1:8080/",
 			MasterKey:           "3ECB00DB9C0F56D72861E88A02D5D914629525EF03072B516A523FF92BB14F5D",
-			ChainId:             1337,
+			ChainId:             8453,
 			RPCAddress:          "http://127.0.0.1:8545",
 			EncryptionAlgorithm: "AES256",
 		}
