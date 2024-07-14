@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 const FormSchema = z.object({
   name: z.string().min(3),
@@ -40,11 +41,6 @@ export default function EntityCreate({ setShowCreateForm }) {
       categories: [],
     },
   });
-
-  const [tags, setTags] = React.useState<Tag[]>([]);
-  const [activeTagIndex, setActiveTagIndex] = React.useState<number | null>(
-    null
-  );
 
   // 2. Define a submit handler.
   function onSubmit(data: z.infer<typeof FormSchema>) {
