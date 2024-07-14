@@ -8,6 +8,15 @@ import axios from "axios";
 import EntityCreate from "./components/EntityCreate";
 import Footer from "./components/Footer";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 interface Entry {
   name: string;
   login: string;
