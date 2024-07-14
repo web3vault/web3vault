@@ -26,7 +26,7 @@ function App() {
   const [error, setError] = useState<Error | null>(null);
   const [listItem, setListItem] = useState(undefined);
   const account = useAccount();
-  const { connectors, connect, status, cerror } = useConnect();
+  const { connectors, connect, status, error: cerror } = useConnect();
   const { disconnect } = useDisconnect();
 
   async function getEntity() {
@@ -178,7 +178,14 @@ function App() {
           )}
         </div>
       </div>
-      <Connecting />
+      <Connecting
+        account={account}
+        disconnect={disconnect}
+        connectors={connectors}
+        connect={connect}
+        cerror={cerror}
+        status={status}
+      />
       <Footer />
     </>
   );

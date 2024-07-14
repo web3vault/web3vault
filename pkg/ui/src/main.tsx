@@ -1,10 +1,12 @@
 import React from "react";
 import { Buffer } from "buffer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
+import { WagmiProvider, createConfig } from "@privy-io/wagmi";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { privyConfig } from "./privyConfig";
+import { wagmiConfig } from "./wagmiConfig";
 import { config } from "./wagmi.ts";
 import { PrivyProvider } from "@privy-io/react-auth";
 
@@ -38,11 +40,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       }}
       appId="clydhhyun0jnpecwk9sfqq4j1"
     >
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={config}>
           <App />
-        </QueryClientProvider>
-      </WagmiProvider>
+        </WagmiProvider>
+      </QueryClientProvider>
     </PrivyProvider>
   </React.StrictMode>
 );

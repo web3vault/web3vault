@@ -1,10 +1,12 @@
+import { Button } from "@/components/ui/button";
+
 export default function Contecting({
   account,
   disconnect,
   connectors,
-  connector,
   connect,
-  error,
+  cerror: error,
+  status,
 }) {
   return (
     <>
@@ -20,26 +22,25 @@ export default function Contecting({
         </div>
 
         {account.status === "connected" && (
-          <button type="button" onClick={() => disconnect()}>
+          <Button type="button" onClick={() => disconnect()}>
             Disconnect
-          </button>
+          </Button>
         )}
       </div>
       <div>
         <h2>Connect</h2>
         {connectors.map((connector) => (
-          <button
+          <Button
             key={connector.uid}
             onClick={() => connect({ connector })}
             type="button"
           >
             {connector.name}
-          </button>
+          </Button>
         ))}
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
-      ;
     </>
   );
 }
