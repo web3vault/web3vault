@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { log } from "console";
 import { useReadContract, useWriteContract } from "wagmi";
+import { bigint } from "zod";
 
 export default function SyncComponent() {
   const { writeContract } = useWriteContract();
+
   const SyncIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -72,23 +74,16 @@ export default function SyncComponent() {
 
   const contractAddress = "0xB85e9607a719a1d51963114aF94F49dAa1335aF1";
 
-  async function syncVault() {
-    console.log("syncVault");
-    console.log(_count);
-
+  async function syncVault(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     writeContract({
-      contractABI,
-      address: "0xB85e9607a719a1d51963114aF94F49dAa1335aF1",
+      address: contractAddress,
+      abi: contractABI,
       functionName: "publishVault",
-      args: "hkjfdshgiuii234",
+      args: ["hkjfdshgiuii234"],
     });
-    console.log("syncVault END");
+    console.log("syncVault");
   }
-  const { _count } = useReadContract({
-    contractABI,
-    address: "0xB85e9607a719a1d51963114aF94F49dAa1335aF1",
-    functionName: "_count",
-  });
 
   return (
     <div>
@@ -96,7 +91,6 @@ export default function SyncComponent() {
         <SyncIcon></SyncIcon>
         <span style={{ marginLeft: 10 }}>Sync your Vault</span>
       </Button>
-      readPublishVault: {_count ? _count : "N/A"}
     </div>
   );
 }

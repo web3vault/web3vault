@@ -7,7 +7,7 @@ export const config = createConfig({
   chains: [base],
   connectors: [
     injected(),
-    walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }),
+    walletConnect({ projectId: "0ad97be72d18e33bf2f715da7a4f602a" }),
   ],
   transports: {
     [base.id]: http(),
