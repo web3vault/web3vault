@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import "./App.css";
 import { Button } from "./components/ui/button";
 import Navbar from "./components/ui/Navbar";
@@ -7,15 +6,9 @@ import EntityListDetail from "./components/EntityListDetail";
 import axios from "axios";
 import EntityCreate from "./components/EntityCreate";
 import Footer from "./components/Footer";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useState, useEffect } from "react";
+import Connecting from "./components/Connecting";
 
 interface Entry {
   name: string;
@@ -32,6 +25,9 @@ function App() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [listItem, setListItem] = useState(undefined);
+  const account = useAccount();
+  const { connectors, connect, status, cerror } = useConnect();
+  const { disconnect } = useDisconnect();
 
   async function getEntity() {
     try {
@@ -182,6 +178,7 @@ function App() {
           )}
         </div>
       </div>
+      <Connecting />
       <Footer />
     </>
   );
