@@ -1,48 +1,35 @@
 package storage
 
-import (
-	"bytes"
-	"fmt"
-	"net/http"
-	"os"
+// func main() {
+// 	// path/to/my.car
+// 	data, _ := os.ReadFile("./db.car")
 
-	"github.com/ipfs/go-cid"
-	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
-	"github.com/multiformats/go-multihash"
-	"github.com/web3-storage/go-w3up/capability/storeadd"
-	"github.com/web3-storage/go-w3up/client"
-)
+// 	// generate the CID for the CAR
+// 	mh, _ := multihash.Sum(data, multihash.SHA2_256, -1)
+// 	link := cidlink.Link{Cid: cid.NewCidV1(0x0202, mh)}
 
-func main() {
-	// path/to/my.car
-	data, _ := os.ReadFile("./db.car")
+// 	rcpt, _ := client.StoreAdd(
+// 		issuer,
+// 		space,
+// 		&storeadd.Caveat{Link: link, Size: len(data)},
+// 		client.WithProofs(proofs),
+// 	)
 
-	// generate the CID for the CAR
-	mh, _ := multihash.Sum(data, multihash.SHA2_256, -1)
-	link := cidlink.Link{Cid: cid.NewCidV1(0x0202, mh)}
+// 	// "upload" means it needs to be uploaded, "done" means it is already done!
+// 	if rcpt.Out().Ok().Status == "upload" {
+// 		hr, _ := http.NewRequest("PUT", *rcpt.Out().Ok().Url, bytes.NewReader(data))
 
-	rcpt, _ := client.StoreAdd(
-		issuer,
-		space,
-		&storeadd.Caveat{Link: link, Size: len(data)},
-		client.WithProofs(proofs),
-	)
+// 		hdr := map[string][]string{}
+// 		for k, v := range rcpt.Out().Ok().Headers.Values {
+// 			hdr[k] = []string{v}
+// 		}
 
-	// "upload" means it needs to be uploaded, "done" means it is already done!
-	if rcpt.Out().Ok().Status == "upload" {
-		hr, _ := http.NewRequest("PUT", *rcpt.Out().Ok().Url, bytes.NewReader(data))
+// 		hr.Header = hdr
+// 		hr.ContentLength = len(data)
+// 		httpClient := http.Client{}
+// 		res, _ := httpClient.Do(hr)
+// 		res.Body.Close()
+// 	}
 
-		hdr := map[string][]string{}
-		for k, v := range rcpt.Out().Ok().Headers.Values {
-			hdr[k] = []string{v}
-		}
-
-		hr.Header = hdr
-		hr.ContentLength = len(data)
-		httpClient := http.Client{}
-		res, _ := httpClient.Do(hr)
-		res.Body.Close()
-	}
-
-	fmt.Println(link.String())
-}
+// 	fmt.Println(link.String())
+// }

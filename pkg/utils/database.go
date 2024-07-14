@@ -3,11 +3,13 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/web3vault/web3vault/pkg/storage"
 )
 
 type Entry struct {
@@ -202,9 +204,12 @@ func LoadDatabase() Database {
 }
 
 func EndpointSyncDatabase(c *gin.Context) {
-	config, err := LoadConfiguration("./config.json")
+	// TODO: Publish the encrypted file to web3.storage
+	// Get the CID from the published file
+	cid, err := storage.AddFileToIPFS("./db.enc")
 	Check(err)
-	b, err := os.ReadFile("./db.enc")
+	fmt.Println("Uploaded the encrypted database to IPFS with CID:", cid)
+	config, err := LoadConfiguration("./config.json")
 	Check(err)
 	var crypt Crypto
 	switch config.EncryptionAlgorithm {
@@ -213,15 +218,12 @@ func EndpointSyncDatabase(c *gin.Context) {
 	case "AES256":
 		crypt = AES256{K: config.MasterKey}
 	}
-	enc := crypt.Encrypt(string(b))
-
-	// TODO: Publish the encrypted file to web3.storage
-	// TODO: Get the CID from the published file
 	// TODO: Encrypt the CID and send it back to the frontend so the user could send a tx to the smart contract
+	encCid := crypt.Encrypt(cid)
 
 	// err = os.WriteFile("./enc_cid", []byte(enc), 0664)
 	// Check(err)
-	c.IndentedJSON(200, enc)
+	c.IndentedJSON(200, encCid)
 }
 
 func EndpointGetBackSyncedDatabase(c *gin.Context) {
