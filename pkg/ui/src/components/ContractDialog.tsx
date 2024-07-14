@@ -60,6 +60,7 @@ export default function ContractDialog() {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Partner: Blockscout
       const query = `
           {
             address(hash: "${contractAddress}") {

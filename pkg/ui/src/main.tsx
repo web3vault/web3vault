@@ -14,6 +14,7 @@ globalThis.Buffer = Buffer;
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
+  // Partners: Privy Integration
   <React.StrictMode>
     <PrivyProvider
       config={{
